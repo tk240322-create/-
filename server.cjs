@@ -144,5 +144,6 @@ ${evaluation}
 
 // サーバ起動
 app.listen(PORT, () => {
+  console.log("123");
   console.log(`サーバー起動：http://localhost:${PORT}`);
 });
