@@ -333,28 +333,72 @@ ${text1.slice(0, 3000)}
 ${text2.slice(0, 3000)}
 ----
 
-質問：
-1. 日報はカリキュラムの内容を正しく反映していますか？
-2. 学習・理解の度合いはどうですか？
-3. 改善点や注意点があれば挙げてください。
+以下の内容を、
+教員が印刷して配布できる
+「評価報告書」形式で出力してください。
 
-これらを比較・評価してください。
+条件：
+・丁寧語
+・見出しを明確に
+・箇条書きを適切に使用
+・A4 1〜2枚を想定
+・最後に総合評価を必ず記載
+
+【構成】
+1. 評価概要
+2. カリキュラムとの対応
+3. 学習理解度の評価
+4. 良い点
+5. 改善点・指導上の注意
+6. 総合評価
 `;
 
       const evaluation = await callLLM(prompt);
 
-      res.send(`
-        <h2>評価結果</h2>
-        <pre>${evaluation}</pre>
-        <a href="/">戻る</a>
-      `);
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+    <meta charset="UTF-8">
+    <title>評価報告書</title>
+    <style>
+      body {
+        font-family: "Yu Mincho", "Hiragino Mincho Pro", serif;
+        margin: 30mm;
+        line-height: 1.8;
+      }
+      h1, h2 {
+        border-bottom: 1px solid #333;
+        padding-bottom: 4px;
+      }
+      .meta {
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+    </style>
+    </head>
+    <body>
 
-    } catch (err) {
-      console.error(err);
-      res.status(500).send(err.message);
-    }
+    <h1>学習到達度評価レポート</h1>
+
+    <div class="meta">
+      作成日：${new Date().toLocaleDateString("ja-JP")}<br>
+      本レポートは学習内容理解の参考評価として自動生成されたものです。
+    </div>
+
+    <div class="content">
+      ${evaluation.replace(/\n/g, "<br>")}
+    </div>
+
+    </body>
+    </html>
+    `);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("エラーが発生しました");
   }
-);
+});
 
 // サーバ起動
 app.listen(PORT, () => {
