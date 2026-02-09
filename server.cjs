@@ -1,23 +1,11 @@
-console.log("### THIS IS server.cjs ###");
 const express = require("express");
 const multer = require("multer");
-const fs = require("fs");
 
 const app = express();
 const PORT = 3000;
 const mammoth = require("mammoth");
 // ★ サーバ全体で共有されるキャッシュ
 const evaluationCache = new Map();
-
-// アップロード先
-const uploadDir = "uploads";
-
-const storage = multer.diskStorage({
-  destination: uploadDir,
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  }
-});
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -84,8 +72,6 @@ app.get("/", (req, res) => {
   </form>
 
   <hr>
-
-  <ul id="savedList"></ul>
 
 <script>
 const dropZone = document.getElementById("dropZone");
@@ -306,7 +292,6 @@ app.post(
   async (req, res) => {
     try {
       console.log("### /upload CALLED ###");
-      console.log(req.files);
 
       if (!req.files || req.files.length !== 2) {
         return res.status(400).send(`
@@ -449,5 +434,4 @@ ${text2.slice(0, 6000)}
 // サーバ起動
 app.listen(PORT, () => {
   console.log(`サーバー起動：http://localhost:${PORT}`);
-  // ハ＾さんはコメントします。
 });
