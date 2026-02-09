@@ -46,11 +46,22 @@ app.get("/", (req, res) => {
     background: #e0f0ff;
     border-color: #3399ff;
   }
+  .system-description {
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.6; 
+  }  
 </style>
 </head>
 
 <body>
   <h2>学習到達度自動分析システム</h2>
+  <p class="system-description">
+    本システムは、カリキュラム資料と日報（またはレポート）の2つのファイルを入力することで、
+    両者の内容をAIが比較・分析し、学習到達度や不足点を自動的に評価するシステムです。
+  </p>
 
   <form method="POST" action="/upload" enctype="multipart/form-data">
 
